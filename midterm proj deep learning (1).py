@@ -652,25 +652,6 @@ ae_real_trained_l2, image_array_ae_real_l2, train_loss_avg_ae_real_l2 = train(lr
 ae_real_trained, image_array_ae_real, train_loss_avg_ae_real = train(lr=0.0001 ,train_dataloader = train_dataloader ,num_epochs = 100)
 
 
-# In[ ]:
-
-
-image_array_ae_real[-5]
-
-
-# In[ ]:
-
-
-#torch.save(ae_real_trained.state_dict(),"ae_real_trained_colorsbtwen0and1_cv2circles.pt")
-
-
-# In[ ]:
-
-
-#torch.save(ae_trained.state_dict(),"ae_trained_twoShapes_100Epochs.pt")
-
-
-# In[ ]:
 
 
 imrae_2_trained_real, image_array_imrae_2_real, train_loss_avg_imrae_2_trained_real = train(lr = 0.0001, train_dataloader = train_dataloader, num_epochs = 100, l = 2)
@@ -682,13 +663,12 @@ imrae_2_trained_real, image_array_imrae_2_real, train_loss_avg_imrae_2_trained_r
 imrae_4_trained, image_array_imrae_4, train_loss_avg_imrae_4_trained = train(lr = 0.0001, train_dataloader = train_dataloader, num_epochs = 10, l = 4)
 
 
-# In[ ]:
 
 
-#torch.save(imrae_4_trained.state_dict(),"imrae_4_trained_cvCircles.pt")
+torch.save([MODEL_NAME].state_dict(),"[FILENAME].pt")
 
 
-# In[33]:
+
 
 
 def singular_values(irmae, test_dataloader,layers = 0):
