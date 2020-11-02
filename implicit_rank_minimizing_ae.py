@@ -625,16 +625,6 @@ for epoch in range(num_epochs):
         
 
 
-# In[58]:
-
-
-#torch.save(ae_real_trained_l2.state_dict(),"ae_real_trained_l2_cvcircles_smallrects_encoderReg_1e-10.pt")
-#torch.save(ae_real_trained_l1.state_dict(),"ae_real_trained_l1_cvcircles_smallrects_encoderReg_1e-10_real.pt")
-#torch.save(imrae_4.state_dict(), "imrae_4_cvCircles_cvRectangles_lastOne_real.pt")
-
-
-# In[61]:
-
 
 x[-5]
 
