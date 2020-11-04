@@ -124,5 +124,37 @@ def createSquareNewestTry(only_rand_blue = False):
 
     return z
 #,[x,y,size]
+def train_set(size = args['train_len']):
+    dataset = []
+  
+    for i in range(size):
+        if(i%500==0):
+            print(f' this is the {i}th iteration')
+        if(np.random.randint(0,2) == 0):
+            data = createCircleNewestTry()
+            dataset.append(data)
+        else:
+            data = createSquareNewestTry()
+            dataset.append(data)
+               
+    return dataset
+
+
+# In[38]:
+
+
+def eval_set(size = args['eval_len']):
+    dataset = []
+
+    for i in range(size):
+        if(i%500==0):
+            print(f' this is the {i}th iteration')
+        if(np.random.randint(0,2) == 0):
+            data = createCircleNewestTry()
+            dataset.append(data)         
+        else:
+            data = createSquareNewestTry()
+            dataset.append(data)         
+    return dataset
 
 
