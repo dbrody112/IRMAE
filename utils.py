@@ -180,34 +180,8 @@ class syntheticShapeDataset:
                 return dataset
         train = train_set()
         validation = eval_set()
-
-
-    
-    
-
-
-
-
-
-
-
- 
-
-
-
-        
-     
-
-
-# In[4]:
-
-
-
-
-
-
-
-    return z
-#,[x,y,size]
-
-
+        train_tensor_data = (torch.tensor(np.reshape((np.concatenate(train_data)),[50000,3,32,32])))
+        to_pil_image(train_tensor_data[90])
+        eval_tensor_data = (torch.tensor(np.reshape((np.concatenate(validation_data)),[10000,3,32,32])))
+        to_pil_image(eval_tensor_data[109])
+        return train_tensor_data, eval_tensor_data
