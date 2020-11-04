@@ -17,6 +17,7 @@ import pandas as pd
 from torch.utils.data import DataLoader, Dataset
 import cv2
 import utils.syntheticShapeDataset
+import model.IMRAE
 
 args = {
     'latent_dim':32,
@@ -32,37 +33,9 @@ args = {
 train_tensor_data,eval_tensor_data = syntheticShapeDataset('small')
 
 
-    
-    
-
-
-# In[ ]:
-
-
-
-
-
-# In[43]:
-
-
 
 test_dataloader = DataLoader(eval_tensor_data, batch_size = args['batch_size'], shuffle = True)
 train_dataloader = DataLoader(train_tensor_data, batch_size = args['batch_size'], shuffle = True)
-
-
-# In[ ]:
-
-
-
-
-
-# In[24]:
-
-
-
-
-
-# In[25]:
 
 
 #maybe decrease the size to ensure square?
@@ -155,30 +128,6 @@ def train_trained_model(imrae2,lr,train_dataloader,num_epochs,regularization = N
     return imrae2,x,train_loss_avg
 
 
-# In[27]:
-
-
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-ae_real_trained_l2 = IMRAE(0)
-ae_real_trained_l2.to(device)
-
-
-# In[48]:
-
-
-imrae_4 = IMRAE(4)
-imrae_4.to(device)
-
-
-# In[29]:
-
-
-ae_real_trained_l1 = IMRAE(0)
-ae_real_trained_l1.to(device)
-
-
-# In[49]:
-
 
 #alternative if there is malfunction in train 
 
@@ -219,34 +168,15 @@ for epoch in range(num_epochs):
         
 
 
-
-x[-5]
-
-
-# In[ ]:
-
-
-
 ae_real_trained_l2, image_array_ae_real_l2, train_loss_avg_ae_real_l2 = train(lr=0.0001 ,train_dataloader = train_twoShape_dataloader ,num_epochs = 5,regularization = "l2")
 
-
-# In[ ]:
-
+ae_real_trained_l1, image_array_ae_real_l2, train_loss_avg_ae_real_l2 = train(lr=0.0001 ,train_dataloader = train_twoShape_dataloader ,num_epochs = 5,regularization = "l1")
 
 ae_real_trained, image_array_ae_real, train_loss_avg_ae_real = train(lr=0.0001 ,train_dataloader = train_dataloader ,num_epochs = 100)
 
-
-
-
 imrae_2_trained_real, image_array_imrae_2_real, train_loss_avg_imrae_2_trained_real = train(lr = 0.0001, train_dataloader = train_dataloader, num_epochs = 100, l = 2)
 
-
-# In[ ]:
-
-
 imrae_4_trained, image_array_imrae_4, train_loss_avg_imrae_4_trained = train(lr = 0.0001, train_dataloader = train_dataloader, num_epochs = 10, l = 4)
-
-
 
 
 torch.save([MODEL_NAME].state_dict(),"[FILENAME].pt")
@@ -281,58 +211,18 @@ def singular_values(irmae, test_dataloader,layers = 0):
     return (diag/max(diag)),latent_covariance
 
 
-# In[ ]:
-
-
-#using dataset with cv2 curcles but not cv2 rects
-model = IMRAE(0)
-model.load_state_dict(torch.load("ae_real_trained_colorsbtwen0and1_cv2circles.pt"))
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model.to(device)
-model2 = IMRAE(2)
-model2.load_state_dict(torch.load("imrae_2_CVCircles.pt"))
-model2.to(device)
-model8 = IMRAE(4)
-model8.load_state_dict(torch.load("imrae_4_trained_cvCircles.pt"))
-model8.to(device)
-diag_ae,_ = singular_values(model,test_dataloader)
-diag_2,_ = singular_values(model2,test_dataloader)
-diag_4,_ = singular_values(imrae_4_trained, test_dataloader)
-
 
 # In[76]:
-
-
-#using dataset with cv2 circles abd cv2 squares (smaller)
-#models are "ae_real_trained_CV2circles_smallerSquares.pt" and "imrae_2_trained_real_CV2circles_smallerSquares.pt"
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model3 = IMRAE(0)
-model3.load_state_dict(torch.load("ae_real_trained_CV2circles_smallerSquares.pt"))
-model3.to(device)
-model4 = IMRAE(2)
-model4.load_state_dict(torch.load("imrae_2_trained_real_CV2circles_smallerSquares.pt"))
-model4.to(device)
-model5 = IMRAE(0)
-model5.load_state_dict(torch.load("ae_real_trained_l1_cvcircles_smallrects.pt"))
-model5.to(device)
-model6 = IMRAE(0)
-model6.load_state_dict(torch.load("ae_real_trained_l2_cvcircles_smallrects_encoderReg_1e-10.pt"))
-model6.to(device)
-model7 = IMRAE(0)
-model7.load_state_dict(torch.load("ae_real_trained_l1_cvcircles_smallrects_encoderReg_1e-10_real.pt"))
-model7.to(device)
-diag_ae_real_trained, latent_cov_ae_real_train = singular_values(model3, test_dataloader)
-diag_2_real_trained, latent_cov_2_real_trained = singular_values(model4, test_dataloader)
+diag_ae_real_trained, latent_cov_ae_real_train = singular_values(ae_real_trained, test_dataloader)
+diag_2_real_trained, latent_cov_2_real_trained = singular_values(imrae_2_trained_real, test_dataloader)
 #ae_real_trained_l1_diag, cov_l1 = singular_values(model5, test_dataloader)
-ae_real_trained_l2_diag,cov_l2 = singular_values(model6, test_dataloader)
+ae_real_trained_l2_diag,cov_l2 = singular_values(ae_real_trained_l2, test_dataloader)
 #test_diag,_ = singular_values(ae_real_trained_l2,test_dataloader)
-ae_real_trained_l1_diag, cov_l1 = singular_values(model7,test_dataloader)
-imrae_4_diag, cov_4 = singular_values(imrae_4, test_dataloader)
+ae_real_trained_l1_diag, cov_l1 = singular_values(ae_real_trained_l2,test_dataloader)
+imrae_4_diag, cov_4 = singular_values(imrae_4_trained, test_dataloader)
 
 
 # In[77]:
-
-
 
 plt.plot(diag_ae_real_trained,label = f'ae with matrix rank: {torch.matrix_rank(torch.tensor(latent_cov_ae_real_train))}')
 plt.plot(diag_2_real_trained, label = f"imrae (l=2) (cv2 rects: {torch.matrix_rank(torch.tensor(latent_cov_2_real_trained))}")
@@ -394,31 +284,6 @@ def interpolate(models,x):
             
 
 
-# In[73]:
 
-
-model = IMRAE(0)
-model.load_state_dict(torch.load("ae_real_trained_colorsbtwen0and1_cv2circles.pt"))
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model.to(device)
-model2 = IMRAE(2)
-model2.load_state_dict(torch.load("imrae_2_CVCircles.pt"))
-model2.to(device)
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model3 = IMRAE(0)
-model3.load_state_dict(torch.load("ae_real_trained_CV2circles_smallerSquares.pt"))
-model3.to(device)
-model4 = IMRAE(2)
-model4.load_state_dict(torch.load("imrae_2_trained_real_CV2circles_smallerSquares.pt"))
-model4.to(device)
-model6 = IMRAE(0)
-model6.load_state_dict(torch.load("ae_real_trained_l2_cvcircles_smallrects_encoderReg_1e-5.pt"))
-model6.to(device)
-model7 = IMRAE(0)
-model7.load_state_dict(torch.load("ae_real_trained_l1_cvcircles_smallrects_encoderReg_1e-10_real.pt"))
-model7.to(device)
-model8 = IMRAE(4)
-model8.load_state_dict(torch.load("imrae_4_cvCircles_cvRectangles_lastOne_real.pt"))
-model8.to(device)
-interpolate([(model3,"ae"),(model7,"ae(reg = l1)"),(model6,"ae(reg = l2)"),(model4,"irmae (l=2)"),(model8,"irmae (l=4)")],np.round(np.linspace(0,1,10),decimals = 1))
+interpolate([(ae_real_trained,"ae"),(ae_real_trained_l1,"ae(reg = l1)"),(ae_real_trained_l2,"ae(reg = l2)"),(imrae_2_trained_real,"irmae (l=2)"),(imrae_4_trained,"irmae (l=4)")],np.round(np.linspace(0,1,10),decimals = 1))
 
