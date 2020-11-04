@@ -29,7 +29,7 @@ args = {
 
 
 # In[21]:
-
+train_tensor_data,eval_tensor_data = syntheticShapeDataset('small')
 
 class encoder(nn.Module):
     def __init__(self):
