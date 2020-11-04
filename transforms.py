@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader, Dataset
 import cv2
 
 class transformSet:
+    def __init__(self)
     #creating synthetic dataset
     #compress maybe?
     def train_set_twoShapes(size = args['train_len']):
