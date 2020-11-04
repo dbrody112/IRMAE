@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from torch.utils.data import DataLoader, Dataset
 import cv2
-import utils.Shape
+import utils.syntheticShapeDataset
 
 args = {
     'latent_dim':32,
@@ -61,30 +61,6 @@ def eval_set_twoShapes(size = args['eval_len']):
 
 
 # In[39]:
-
-
-train_data = train_set()
-
-
-# In[40]:
-
-
-validation_data = eval_set()
-
-
-# In[41]:
-
-
-train_tensor_data = (torch.tensor(np.reshape((np.concatenate(train_data)),[50000,3,32,32])))
-to_pil_image(train_tensor_data[90])
-
-
-# In[42]:
-
-
-eval_tensor_data = (torch.tensor(np.reshape((np.concatenate(validation_data)),[10000,3,32,32])))
-to_pil_image(eval_tensor_data[109])
-
 
 # In[ ]:
 
