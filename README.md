@@ -4,6 +4,7 @@ Specifically, I replicated figure 2 and figure 3 using a synthetic shape dataset
 
 ## Singular Value Rank vs. Singular Values
 This graph was made by taking the latent covariance (covariance of space between encoder and decoder) and finding the singular values through SVD.
+
 ![image1](https://user-images.githubusercontent.com/59486373/98158559-170d8380-1ea9-11eb-8b18-ce316ee7b90e.png)
 
 ## Linear Interpolation
