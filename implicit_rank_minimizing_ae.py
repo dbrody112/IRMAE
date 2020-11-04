@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from torch.utils.data import DataLoader, Dataset
 import cv2
+import utils.Shape
 
 args = {
     'latent_dim':32,
@@ -25,38 +26,6 @@ args = {
     'train_len' : 50000,
     'eval_len' : 10000
 }
-to_pil_image= transforms.ToPILImage()
-
-
-# In[3]:
-
-
-# In[6]:
-
-
-to_pil_image(createSquareNewestTry())
-
-
-# In[7]:
-
-
-to_pil_image(createCircleNewTry())
-
-
-# In[8]:
-
-
-
-to_pil_image(createCircle())
-
-
-# In[9]:
-
-
-to_pil_image(createSquare() + createCircle())
-
-
-# In[11]:
 
 
 #creating synthetic dataset
