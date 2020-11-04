@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import cv2
 
-
-def rectangleOrCircle():
+class syntheticShapeDataset:
+    def rectangleOrCircle():
     if(np.random.uniform(0,1)) >= 0.5:
         return 'rectangle'
     else:
@@ -124,4 +124,5 @@ def createSquareNewestTry(only_rand_blue = False):
 
     return z
 #,[x,y,size]
+
 
