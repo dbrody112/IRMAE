@@ -11,4 +11,6 @@ This graph was made by taking the latent covariance (covariance of space between
 This linear interpolation was created by a custom function that can be found in main.py
 ![image2](https://user-images.githubusercontent.com/59486373/98158963-c6e2f100-1ea9-11eb-8ece-05bca831e7ce.png)
 
+<i>more info can be found in irmae_paper.pdf as well as the raw code (without organization)</i>
+
 
